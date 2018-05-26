@@ -1,13 +1,14 @@
-# 0、BlogRayiooo
+# BlogRayiooo
 这是一个Django博客。
 
-# 1 支持库
+# 1 支持python库（python3.6）
 * django
 * pymysql
+* mod_wsgi
 
 # 2 软件工具
 * PyCharm（IDE）
-* phpStudy（Apache、MySQL等环境的一键配置工具，超好用！）
+* phpStudy（Apache2.4/32位、MySQL等环境的一键配置工具，超好用！）
 
 # 3 搭建步骤
 ## 3.1 准备工作
@@ -67,6 +68,66 @@ Superuser created successfully.
 
 6.在PyCharm中直接运行程序，服务器即可启动。当然也可以通过“python manage.py runserver”执行。
 
-访问[127.0.0.1:8000](http://127.0.0.1:8000)以及[127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)即可查看主界面和admin界面。
+访问[127.0.0.1:8000](http://127.0.0.1:8000)以及[127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)即可在本地查看主界面和admin界面。
+
+## 3.2 部署服务器端
+特别参考：[windows 下 apache 部署 django python3.6](https://blog.csdn.net/u012846792/article/details/77712958)
+
+特别强调注意的是：apache 的位制和python的位制必须一致（即apache 32位的就只能安装python 32位的，64位也一样）网上很多教程没强调这一点，导致后续的很多工作白费，还找不到问题所在！
+
+因此如果使用phpStudy的apache 32位，就必须使用python 32位。
+
+### 3.2.1 mod_wsgi安装
+通过“pip install mod_wsgi”安装mod_wsgi。
+
+如果无法直接安装，就到[https://www.lfd.uci.edu/~gohlke/pythonlibs/#mod_wsgi](https://www.lfd.uci.edu/~gohlke/pythonlibs/#mod_wsgi)下载whl文件，放到任意目录下，并在该目录下启动cmd，输入“pip install 文件名.whl”安装模块。
+
+比如Apache2.4、python3.6/32位就选择下载mod_wsgi‑4.6.4+ap24vc14‑cp36‑cp36m‑win32.whl。
+
+### 3.2.2 部署wsgi模块到apache
+在命令行中输入以下指令：
+```
+mod_wsgi-express module-config
+```
+
+可以看到以下wsgi模块位置的输出结果，将它们复制下来。（在cmd中选中、右击即可复制粘贴。）
+>LoadFile "c:/program files (x86)/python36/python36.dll"
+>LoadModule wsgi_module "c:/program files (x86)/python36/lib/site-packages/mod_wsgi/server/mod_wsgi.cp36-win32.pyd"
+>WSGIPythonHome "c:/program files (x86)/python36"
+
+在phpStudy中点击“其他选项菜单/打开配置文件/httpd-conf”，把这三行内容复制到到LoadModule最后的部分（应该也可以复制到整个文件的最后部分）。
+
+### 3.2.3 部署django项目路径到apache
+同样，在apache的http.conf末尾添加下面的内容。目录不同，请对照自己的项目做相应更改。
+```
+#指定website的wsgi.py配置文件路径
+WSGIScriptAlias / C:/Users/Administrator/Desktop/WebServer/_180524_BlogRayiooo/mysite/wsgi.py
+#指定项目路径
+WSGIPythonPath  C:/Users/Administrator/Desktop/WebServer/_180524_BlogRayiooo
+<Directory C:/Users/Administrator/Desktop/WebServer/_180524_BlogRayiooo/mysite>
+    <Files wsgi.py>
+        Require all granted
+        setHandler wsgi-script
+    </Files>
+</Directory>
+```
+
+### 3.2.4 wsgi.py配置
+在项目的wsgi.py文件中import os后添加如下代码。
+```
+import sys
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
+```
+
+### 3.2.5 配置完成
+在phpStudy中重启apache，从本地（127.0.0.1）和外网（服务器地址）分别访问，查看是否配置成功。
+
+如果出现“HTTP 500 - Internal server error”错误，在apache/logs/error.log中查看错误原因。
+
+如果出现“DisallowedHost at / Invalid HTTP_HOST header”错误，就在项目的settings.py文件下做出更改：
+```python
+ALLOWED_HOSTS = ['*']
+```
 
 # 参考资料

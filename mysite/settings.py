@@ -25,7 +25,7 @@ SECRET_KEY = 'pu-vdh&c90=#k#(8^lf5)l2jnacgj@-2(mmtj*ioxju9-3qrj+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
