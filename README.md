@@ -154,6 +154,38 @@ ALLOWED_HOSTS = ['*']
 
 ![login.png](https://i.loli.net/2018/05/27/5b0a6f92d3fc5.png)
 
+## 3.3 静态文件配置
+参考文档：[django静态文件配置](https://www.cnblogs.com/starof/p/4682812.html)
+
+静态文件配置就是为了让用户请求时django服务器能找到静态文件返回。
+
+首先要理解几个概念：
+
+>* 媒体文件：用户上传的文件
+>* 静态文件：css,js，image等
+>* 开发环境：使用django内置服务器处理静态文件
+>* 生产环境：使用apache2/nginx服务器处理静态文件映射
+
+所以在配置时要分清楚开发环境还是生产环境。
+
+### 3.3.1 settings.py配置
+在settings.py中配置如下：
+
+```python
+STATIC_URL = '/static/'
+
+# 总的static目录
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# 放各个app的static目录及公共的static目录，可空
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'blog/static'),
+]
+```
+
+### 3.3.2 收集静态文件到static目录
+在cmd中运行`python manage.py collectstatic`，即可将admin的静态文件收集到static目录下。
+
 # 参考资料
 [django 快速搭建blog](https://www.cnblogs.com/fnng/p/3737964.html)
 
