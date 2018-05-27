@@ -169,7 +169,7 @@ ALLOWED_HOSTS = ['*']
 所以在配置时要分清楚开发环境还是生产环境。为了在生产环境中也能使用到静态文件，我们进行以下配置。
 
 ### 3.3.1 settings.py配置
-在settings.py中配置如下：
+在settings.py中配置static静态文件夹路径如下：
 
 ```python
 STATIC_URL = '/static/'
@@ -177,15 +177,34 @@ STATIC_URL = '/static/'
 # 总的static目录
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-# 放各个app的static目录及公共的static目录
+# 放各个app的分static目录及公共的static目录
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'), 
     os.path.join(BASE_DIR, 'blog/static'),
 ]
 ```
 
 ### 3.3.2 收集静态文件到static目录
-在cmd中运行`python manage.py collectstatic`，即可将admin的静态文件收集到static目录下。
+在cmd中运行`python manage.py collectstatic`，即可将admin的静态文件收集到工程文件夹下的static目录下。
+
+### 3.3.3 配置服务器端apache的httpd.conf
+通过Github将本地收集到的static文件们同步到服务器端后，在服务器的apache的httpd.conf文件夹下进行如下配置：
+
+```text
+# set static path
+Alias /static "C:\Users\Administrator\Desktop\WWW\BlogRayiooo\static"
+<Directory "C:\Users\Administrator\Desktop\WWW\BlogRayiooo\static">
+  Require all granted 
+</Directory>
+```
+
+这表示我们将`"C:\Users\Administrator\Desktop\WWW\BlogRayiooo\static"`这个路径的东西映射到网站的`http://我的IP/static`分支下。这时我的http.conf文件里应该是这样的：
+
+![httpconf.png](https://i.loli.net/2018/05/28/5b0ae03124ed2.png)
+
+这段配置应当放到wsgi配置前，以保证载入wsgi时不再缺失static文件。
+
+### 3.3.4 css文件在远端加载成功
+重启phpStudy的apach，即可在远端成功加载css文件。（摸爬滚打一下午+晚上终于完成）
 
 # 参考资料
 [django 快速搭建blog](https://www.cnblogs.com/fnng/p/3737964.html)

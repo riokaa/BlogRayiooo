@@ -27,12 +27,12 @@ SECRET_KEY = 'pu-vdh&c90=#k#(8^lf5)l2jnacgj@-2(mmtj*ioxju9-3qrj+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # 项目没上线
-# DEBUG = True
+DEBUG = True
 #
 # ALLOWED_HOSTS = []
 
 # 项目上线
-DEBUG = False
+# DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -149,7 +149,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # 存放的时候按类别存放在static目录的子目录下，如图片都放在images文件夹中，所有的CSS都放在css文件夹中，所有的js文件都放在js文件夹中。
 # 将app中的静态文件添加到静态文件配置列表中
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static/admin'),
     os.path.join(BASE_DIR, 'blog/static'),
 ]
 
