@@ -1,6 +1,12 @@
 # BlogRayiooo
 这是一个Django博客。
 
+[更方便地查看文档](https://www.zybuluo.com/rayiooo/note/1155365)
+
+|Author|爱吃大板|
+|---|---|
+|Email|rayiooo@foxmail.com|
+
 # 1 支持python库（python3.6）
 * django
 * pymysql
@@ -66,7 +72,7 @@ Running migrations:
 ### 3.1.5 创建超管账号
 要想登录admin后台，必须要有帐号，接下来创建超级管理员帐号。[↻](https://www.cnblogs.com/fnng/p/3737964.html)
 
-```
+```text
 mysite> python manage.py createsuperuser
 Username (leave blank to use 'fnngj'): admin    # 管理员帐号
 Email address: admin@mail.com      # email
@@ -79,6 +85,8 @@ Superuser created successfully.
 在PyCharm中直接运行程序，服务器即可启动。当然也可以通过`python manage.py runserver`命令行指令执行。
 
 访问 [127.0.0.1:8000](http://127.0.0.1:8000) 以及 [127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) 即可在本地查看主界面和admin界面。
+
+![login.png](https://i.loli.net/2018/05/27/5b0a6f4165515.png)
 
 ## 3.2 部署服务器端
 特别参考：[windows 下 apache 部署 django python3.6](https://blog.csdn.net/u012846792/article/details/77712958)
@@ -142,4 +150,17 @@ sys.path.append(BASE_DIR)
 ALLOWED_HOSTS = ['*']
 ```
 
+最终访问成功，只不过在admin页面中缺失了css文件。
+
+![login.png](https://i.loli.net/2018/05/27/5b0a6f92d3fc5.png)
+
 # 参考资料
+[django 快速搭建blog](https://www.cnblogs.com/fnng/p/3737964.html)
+
+[django数据库错误相关问题](https://blog.csdn.net/pipisorry/article/details/45727309)
+
+[windows 下 apache 部署 django python3.6](https://blog.csdn.net/u012846792/article/details/77712958)
+
+[django静态文件配置](https://www.cnblogs.com/starof/p/4682812.html)
+
+[django settings最佳配置](http://www.cnblogs.com/bergus/p/4423681.html)
