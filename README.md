@@ -18,10 +18,14 @@
 
 # 3 搭建步骤
 ## 3.1 准备工作
+首先我们要建立一个django工程，并使得它在本地能够被访问。
+
 ### 3.1.1 新建项目
 在PyCharm的`File/New Project`中新建一个Django项目。
 
 ### 3.1.2 修改数据库类型
+Django默认使用了python自带的SQLite数据库。我在这里修改它，当然你也可以使用SQLite进行存储数据。
+
 在`mysite/settings.py`中修改数据库类型为MySQL，如下：
 
 ```python
@@ -70,7 +74,7 @@ Running migrations:
 如果在这个过程中出现任何错误，参照 [django数据库错误相关问题](https://blog.csdn.net/pipisorry/article/details/45727309)。
 
 ### 3.1.5 创建超管账号
-要想登录admin后台，必须要有帐号，接下来创建超级管理员帐号。[↻](https://www.cnblogs.com/fnng/p/3737964.html)
+要想登录django自带的admin后台，必须要有帐号，接下来创建超级管理员帐号。[↻](https://www.cnblogs.com/fnng/p/3737964.html)
 
 ```text
 mysite> python manage.py createsuperuser
@@ -88,12 +92,16 @@ Superuser created successfully.
 
 ![login.png](https://i.loli.net/2018/05/27/5b0a6f4165515.png)
 
+输入之前设定的账号密码，即可进入django自带的数据库管理界面。
+
 ## 3.2 部署服务器端
 特别参考：[windows 下 apache 部署 django python3.6](https://blog.csdn.net/u012846792/article/details/77712958)
 
 **特别强调注意**的是：apache 的位制和python的位制必须一致（即apache 32位的就只能安装python 32位的，64位也一样）网上很多教程没强调这一点，导致后续的很多工作白费，还找不到问题所在！
 
-因此如果使用phpStudy的apache 32位，就必须使用python 32位。
+因此如果使用phpStudy的apache 32位，就必须使用python 32位。当然你也可以下载独立的Apache进行相应操作。
+
+部署服务器端的时候，需要将之前在开发时进行的测试操作重新执行一遍。
 
 ### 3.2.1 mod_wsgi安装
 通过`pip install mod_wsgi`安装mod_wsgi。
@@ -155,9 +163,9 @@ ALLOWED_HOSTS = ['*']
 ![login.png](https://i.loli.net/2018/05/27/5b0a6f92d3fc5.png)
 
 ## 3.3 静态文件配置
-参考文档：[django static文件的引入方式](http://www.cnblogs.com/yangxiaolan/p/5826661.html) / [django静态文件配置](https://www.cnblogs.com/starof/p/4682812.html)
+参考文档：[django静态文件配置](https://www.cnblogs.com/starof/p/4682812.html)
 
-静态文件配置就是为了让用户请求时django服务器能找到静态文件返回。
+静态文件配置就是为了让用户请求时django服务器能找到静态文件并返回。在开发时，静态文件存储在python安装目录下，但是在服务器上运行django时则无法从该目录获取静态文件，就会出现css缺失而导致3.2.5中所述情况发生。
 
 首先要理解几个概念：
 
@@ -166,7 +174,7 @@ ALLOWED_HOSTS = ['*']
 >* 开发环境：使用django内置服务器处理静态文件
 >* 生产环境：使用apache2/nginx服务器处理静态文件映射
 
-所以在配置时要分清楚开发环境还是生产环境。为了在生产环境中也能使用到静态文件，我们进行以下配置。
+所以在配置时要分清楚开发环境还是生产环境。为了在生产环境中也能使用到静态文件，而不会出现访问时找不到css、js文件的问题，我们进行以下配置。
 
 ### 3.3.1 settings.py配置
 在settings.py中配置static静态文件夹路径如下：
@@ -184,7 +192,7 @@ STATICFILES_DIRS = [
 ```
 
 ### 3.3.2 收集静态文件到static目录
-在cmd中运行`python manage.py collectstatic`，即可将admin的静态文件收集到工程文件夹下的static目录下。
+在cmd中运行`python manage.py collectstatic`，即可将原本放在python安装目录下的admin的静态文件收集到工程文件夹下的static目录下。
 
 ### 3.3.3 配置服务器端apache的httpd.conf
 通过Github将本地收集到的static文件们同步到服务器端后，在服务器的apache的httpd.conf文件夹下进行如下配置：
@@ -204,7 +212,88 @@ Alias /static "C:\Users\Administrator\Desktop\WWW\BlogRayiooo\static"
 这段配置应当放到wsgi配置前，以保证载入wsgi时不再缺失static文件。
 
 ### 3.3.4 css文件在远端加载成功
-重启phpStudy的apach，即可在远端成功加载css文件。（摸爬滚打一下午+晚上终于完成）
+重启phpStudy的apach，即可在远端成功加载css文件。（摸爬滚打一下午 + 一晚上终于完成）
+
+## 3.4 设计models.py（数据库表）
+每个博客的文章都包含了标题、作者、类型、发布时间、阅读量、文章内容、Url等字段。为了给这些元素建立一个数据库，我们将设计`blog/models.py`文件，并使用django的`migrations`指令和`migrate`指令快速建库。
+
+### 3.4.1 设计blog表
+打开`blog/models.py`，定义数据库的结构。了解更多请参阅 [Django Models 文档](https://docs.djangoproject.com/en/1.11/topics/db/models/)
+
+```python
+from django.db import models
+
+
+# Create your models here.
+class User(models.Model):
+    id = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=10, unique=True)
+    password = models.CharField(max_length=64)
+
+
+class ArticleType(models.Model):
+    type = models.CharField(unique=True, max_length=10)
+
+
+class Article(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=150)
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    type = models.ForeignKey(ArticleType, on_delete=models.PROTECT)
+    content = models.TextField()
+    timestamp = models.DateTimeField()
+    click = models.IntegerField(default=0)
+```
+
+### 3.4.2 执行数据库同步
+```text
+D:\Coding Projects\Python\_180524_BlogRayiooo>python manage.py makemigrations blog
+Migrations for 'blog':
+  blog\migrations\0001_initial.py
+    - Create model Article
+    - Create model ArticleType
+    - Create model User
+    - Add field author to article
+    - Add field type to article
+
+D:\Coding Projects\Python\_180524_BlogRayiooo>python manage.py migrate
+System check identified some issues:
+
+WARNINGS:
+?: (mysql.W002) MySQL Strict Mode is not set for database connection 'default'
+        HINT: MySQL's Strict Mode fixes many data integrity problems in MySQL, such as data truncation upon insertion, by escalating warnings into errors. It is strongly recommended you activate it. See: https://docs.djangoproject.com/en/2.0/ref/databases/#mysql-sql-mode
+Operations to perform:
+  Apply all migrations: admin, auth, blog, contenttypes, sessions
+Running migrations:
+  Applying blog.0001_initial... OK
+```
+
+### 3.4.3 通过admin.py管理
+编写`blog/admin.py`文件如下：
+```python
+from django.contrib import admin
+from blog.models import User, ArticleType, Article
+
+
+# Register your models here.
+class UserAdmin(admin.ModelAdmin):
+    list_display = ['username', 'password']
+
+
+class ArticleTypeAdmin(admin.ModelAdmin):
+    list_display = ['type']
+
+
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ['id', 'title', 'author', 'type', 'content', 'timestamp']
+
+
+admin.site.register(User, UserAdmin)
+admin.site.register(ArticleType, ArticleTypeAdmin)
+admin.site.register(Article, ArticleAdmin)
+```
+
+### 3.4.4 登录Admin后台添加blog
 
 # 参考资料
 [django 快速搭建blog](https://www.cnblogs.com/fnng/p/3737964.html)
@@ -213,8 +302,10 @@ Alias /static "C:\Users\Administrator\Desktop\WWW\BlogRayiooo\static"
 
 [windows 下 apache 部署 django python3.6](https://blog.csdn.net/u012846792/article/details/77712958)
 
-[django static文件的引入方式](http://www.cnblogs.com/yangxiaolan/p/5826661.html)
-
 [django静态文件配置](https://www.cnblogs.com/starof/p/4682812.html)
 
 [django settings最佳配置](http://www.cnblogs.com/bergus/p/4423681.html)
+
+[Django Models 文档](https://docs.djangoproject.com/en/1.11/topics/db/models/)
+
+[使用strapdown.js解析markdown](https://blog.csdn.net/u010351766/article/details/51704958)
