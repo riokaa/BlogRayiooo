@@ -283,6 +283,7 @@ Running migrations:
 
 ### 3.4.3 通过admin.py管理
 编写`blog/admin.py`文件如下：
+
 ```python
 from django.contrib import admin
 from blog.models import User, ArticleType, Article
@@ -290,7 +291,7 @@ from blog.models import User, ArticleType, Article
 
 # Register your models here.
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'password', 'E-mail']
+    list_display = ['username', 'password', 'email']
 
 
 class ArticleTypeAdmin(admin.ModelAdmin):
@@ -298,7 +299,7 @@ class ArticleTypeAdmin(admin.ModelAdmin):
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['title', 'author', 'type', 'content', 'timestamp']
+    list_display = ['title', 'author', 'type', 'content', 'timestamp', 'click']
 
 
 admin.site.register(User, UserAdmin)
@@ -311,8 +312,62 @@ admin.site.register(Article, ArticleAdmin)
 
 ![TIM截图20180529192940.png](https://i.loli.net/2018/05/29/5b0d39aec3710.png)
 
-## 3.5
+## 3.5 让Article在页面中显示出来
 
+### 3.5.1 在views.py中创建视图函数
+在`blog/views.py`中修改内容如下：
+
+```python
+from django.shortcuts import render, render_to_response
+from blog.models import Article
+
+
+# Create your views here.
+def blog_article(request):
+    # 获取Article的所有数据到blog_list中（QuerySet类型）
+    blog_list = Article.objects.all()
+    # 创建一个dict方便传给模板网页（context）
+    c = {
+        'blog_list': blog_list,
+    }
+    # 将c交给article.html处理
+    return render_to_response('article.html', c)
+```
+
+### 3.5.2 创建模板（templates）
+在`blog/templates/`下创建`article.html`文件，当然这个目录要包含在`settings.py`的TEMPLATES中。
+
+Html文件编写如下：
+```html
+{% for blog in blog_list %}
+    <h2>{{ blog.title }}</h2>
+    <p>{{ blog.timestamp }}</p>
+    <p>{{ blog.content }}</p>
+{% endfor %}
+```
+
+如需了解Django的模板系统，参见 [Django模板系统(非常详细)](https://blog.csdn.net/zhangxinrun/article/details/8095118/) 。
+
+### 3.5.3 在urls.py中创建Url模式
+在`mysite/urls.py`中，你可以指定网站的分支目录显示哪些内容。
+
+```python
+from django.contrib import admin
+from django.urls import path
+from blog import views as blog_views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('blog/', blog_views.blog_article),
+]
+```
+
+比如在上面的设置中，`http://你的域名/blog/`目录将按照`blog_views.blog_article`的设定显示内容。
+
+### 3.5.4 查看效果
+登入 [127.0.0.1:8000/blog/](thhp://127.0.0.1:8000/blog/) 就可以查看效果了。
+
+![TIM截图20180529222013.png](https://i.loli.net/2018/05/29/5b0d61c6e71d9.png)
 
 # 参考资料
 [django 快速搭建blog](https://www.cnblogs.com/fnng/p/3737964.html)
@@ -326,5 +381,7 @@ admin.site.register(Article, ArticleAdmin)
 [django settings最佳配置](http://www.cnblogs.com/bergus/p/4423681.html)
 
 [Django Models 文档](https://docs.djangoproject.com/en/1.11/topics/db/models/)
+
+[Django模板系统(非常详细)](https://blog.csdn.net/zhangxinrun/article/details/8095118/)
 
 [使用strapdown.js解析markdown](https://blog.csdn.net/u010351766/article/details/51704958)
