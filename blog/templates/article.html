@@ -1,5 +1,9 @@
-{% for blog in blog_list %}
-    <h2>{{ blog.title }}</h2>
-    <p>{{ blog.timestamp }}</p>
-    <p>{{ blog.content }}</p>
-{% endfor %}
+{% extends 'blog.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <h2>{{ article.title }}</h2>
+    <p>{{ article.timestamp }}</p>
+    <p>{{ article.content }}</p>
+{% endblock %}
