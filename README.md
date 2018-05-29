@@ -1,5 +1,7 @@
-# BlogRayiooo
+
 这是一个Django博客。
+
+`BlogRayiooo` = `python3.6/32位` + `apache2.4/32位` + `MySQL` + `win10 server`
 
 [更方便地查看文档](https://www.zybuluo.com/rayiooo/note/1155365)
 
@@ -7,7 +9,7 @@
 |---|---|
 |Email|rayiooo@foxmail.com|
 
-# 1 支持python库（python3.6）
+# 1 python库
 * django
 * pymysql
 * mod_wsgi

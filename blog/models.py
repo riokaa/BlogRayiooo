@@ -9,7 +9,7 @@ class User(models.Model):
 
 
 class ArticleType(models.Model):
-    type = models.CharField(unique=True, max_length=10)
+    type = models.CharField(primary_key=True, unique=True, max_length=10)
 
 
 class Article(models.Model):
