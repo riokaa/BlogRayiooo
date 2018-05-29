@@ -4,7 +4,7 @@ from blog.models import User, ArticleType, Article
 
 # Register your models here.
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'password']
+    list_display = ['username', 'password', 'email']
 
 
 class ArticleTypeAdmin(admin.ModelAdmin):
@@ -12,7 +12,7 @@ class ArticleTypeAdmin(admin.ModelAdmin):
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'author', 'type', 'content', 'timestamp']
+    list_display = ['title', 'author', 'type', 'content', 'timestamp']
 
 
 admin.site.register(User, UserAdmin)

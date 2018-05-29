@@ -228,26 +228,35 @@ from django.db import models
 
 # Create your models here.
 class User(models.Model):
-    id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=10, unique=True)
-    password = models.CharField(max_length=64)
+    password = models.CharField(max_length=100)
+    email = models.EmailField()
+    last_login = models.DateTimeField()
+    date_joined = models.DateTimeField()
+    id = models.AutoField(primary_key=True, unique=True)
 
 
 class ArticleType(models.Model):
-    type = models.CharField(unique=True, max_length=10)
+    type = models.CharField(primary_key=True, unique=True, max_length=10)
 
 
 class Article(models.Model):
-    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=150)
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     type = models.ForeignKey(ArticleType, on_delete=models.PROTECT)
     content = models.TextField()
     timestamp = models.DateTimeField()
     click = models.IntegerField(default=0)
+    id = models.AutoField(primary_key=True)
 ```
 
 ### 3.4.2 执行数据库同步
+利用`python manage.py makemigrations blog`命令可以在`blog/migrations`目录下建立一个migration，例如`0001_initial.py`，在这个文件中根据你规定的models定义了一些建库操作。
+
+因此，接下来执行`python manage.py migrate`指令就可以根据migrations文件夹下的文件执行建库操作。
+
+假如你在本地进行了`makemigrations`，只需将migrations文件夹中的文件同步到服务器端，并在服务器端执行`migrate`指令，即可便捷地完成建库。
+
 ```text
 D:\Coding Projects\Python\_180524_BlogRayiooo>python manage.py makemigrations blog
 Migrations for 'blog':
@@ -279,7 +288,7 @@ from blog.models import User, ArticleType, Article
 
 # Register your models here.
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'password']
+    list_display = ['username', 'password', 'E-mail']
 
 
 class ArticleTypeAdmin(admin.ModelAdmin):
@@ -287,7 +296,7 @@ class ArticleTypeAdmin(admin.ModelAdmin):
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'author', 'type', 'content', 'timestamp']
+    list_display = ['title', 'author', 'type', 'content', 'timestamp']
 
 
 admin.site.register(User, UserAdmin)
