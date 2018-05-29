@@ -64,7 +64,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'blog/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -86,14 +86,16 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 import pymysql
 pymysql.install_as_MySQLdb()
+
+from . import dbpass    # dbpass存储了数据库相关数值，请自行添加
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'blogdb',
-        'USER': 'root',
-        'PASSWORD': '970814',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'NAME': dbpass.PASS['NAME'],
+        'USER': dbpass.PASS['USER'],
+        'PASSWORD': dbpass.PASS['PASSWORD'],
+        'HOST': dbpass.PASS['HOST'],
+        'PORT': dbpass.PASS['PORT'],
     }
 }
 

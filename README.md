@@ -45,6 +45,8 @@ DATABASES = {
 }
 ```
 
+如果不想将数据库密码同步到Github公开项目中，可以创建一个`dbpass.py`文件，将数据库登入数据存储在那里，然后在此处引用，并且将其放入`.gitignore`文件中，即可在Commit时忽略此文件。
+
 ### 3.1.3 创建数据库
 通过phpStudy的MySQL管理器进入数据库，新建一个数据库`blogdb`，并保持数据库登入账号密码与上面的值相同。
 
@@ -76,7 +78,7 @@ Running migrations:
 如果在这个过程中出现任何错误，参照 [django数据库错误相关问题](https://blog.csdn.net/pipisorry/article/details/45727309)。
 
 ### 3.1.5 创建超管账号
-要想登录django自带的admin后台，必须要有帐号，接下来创建超级管理员帐号。[↻](https://www.cnblogs.com/fnng/p/3737964.html)
+要想登录django自带的admin后台，必须要有帐号，这个账号和数据库账号是不同的。接下来创建超级管理员帐号。[↻](https://www.cnblogs.com/fnng/p/3737964.html)
 
 ```text
 mysite> python manage.py createsuperuser
@@ -216,7 +218,7 @@ Alias /static "C:\Users\Administrator\Desktop\WWW\BlogRayiooo\static"
 ### 3.3.4 css文件在远端加载成功
 重启phpStudy的apach，即可在远端成功加载css文件。（摸爬滚打一下午 + 一晚上终于完成）
 
-## 3.4 设计models.py（数据库表）
+## 3.4 设计models.py（数据库表）并添加数据
 每个博客的文章都包含了标题、作者、类型、发布时间、阅读量、文章内容、Url等字段。为了给这些元素建立一个数据库，我们将设计`blog/models.py`文件，并使用django的`migrations`指令和`migrate`指令快速建库。
 
 ### 3.4.1 设计blog表
@@ -305,6 +307,12 @@ admin.site.register(Article, ArticleAdmin)
 ```
 
 ### 3.4.4 登录Admin后台添加blog
+登陆网站的admin目录，添加完User和ArticleType后，就可以添加Article了。添加完成后点击`SAVE`即可保存。
+
+![TIM截图20180529192940.png](https://i.loli.net/2018/05/29/5b0d39aec3710.png)
+
+## 3.5
+
 
 # 参考资料
 [django 快速搭建blog](https://www.cnblogs.com/fnng/p/3737964.html)
