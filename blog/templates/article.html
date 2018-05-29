@@ -1,9 +1,15 @@
 {% extends 'blog.html' %}
 
-{% block title %}{% endblock %}
+{% block title %}{{ article.title }}{% endblock %}
+{% block icon_path %}href="../../static/blog/img/favicon.ico"{% endblock %}
+{% block main_path %}href="../"{% endblock %}
+{% block home_path %}href="../"{% endblock %}
 
 {% block content %}
     <h2>{{ article.title }}</h2>
-    <p>{{ article.timestamp }}</p>
-    <p>{{ article.content }}</p>
+    <p style="float: left;">作者：{{ article.author.username }}&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    <p>阅读量：{{ article.click }}</p>
+    <p>发布时间：{{ article.timestamp }}</p>
+    <HR>
+    <p>{{ article.content|safe }}</p>
 {% endblock %}

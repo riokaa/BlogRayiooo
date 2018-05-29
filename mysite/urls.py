@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.generic.base import RedirectView
 from blog import views as blog_view
 from . import private
 
 urlpatterns = [
     path(private.ADMIN_MENU, admin.site.urls),
     path('blog/', blog_view.blog_main),
-    path('blog/s/', blog_view.blog_article),
+    path('blog/article/', blog_view.blog_article),
+    # path('static/', RedirectView.as_view(url='../static')),
+    # path('static/img/blog/favicon.ico', RedirectView.as_view(url='../static/img/blog/favicon.ico')),
 ]

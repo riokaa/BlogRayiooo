@@ -3,8 +3,6 @@
 
 `BlogRayiooo` = `python3.6/32位` + `apache2.4/32位` + `MySQL` + `win10 server`
 
-[更方便地查看文档](https://www.zybuluo.com/rayiooo/note/1155365)
-
 |Author|爱吃大板|
 |---|---|
 |Email|rayiooo@foxmail.com|
@@ -13,6 +11,7 @@
 * django
 * pymysql
 * mod_wsgi
+* markdown2
 
 # 2 软件工具
 * PyCharm（IDE）
@@ -369,6 +368,14 @@ urlpatterns = [
 
 ![TIM截图20180529222013.png](https://i.loli.net/2018/05/29/5b0d61c6e71d9.png)
 
+## 3.6 其他功能
+
+### 3.6.1 美化blog
+根据 [django 快速搭建blog](https://www.cnblogs.com/fnng/p/3737964.html) 最后一部分内容，美化blog。
+
+### 3.6.2 支持显示markdown
+根据 [django1.10开发博客（11）——markdown与多说评论功能](https://www.jianshu.com/p/a49ab81a683c) 的内容，将markdown格式的article解析到网页上。
+
 # 参考资料
 [django 快速搭建blog](https://www.cnblogs.com/fnng/p/3737964.html)
 
@@ -384,4 +391,10 @@ urlpatterns = [
 
 [Django模板系统(非常详细)](https://blog.csdn.net/zhangxinrun/article/details/8095118/)
 
-[使用strapdown.js解析markdown](https://blog.csdn.net/u010351766/article/details/51704958)
+[django进阶-查询(适合GET4以上人群阅读)](https://www.cnblogs.com/0zcl/p/6601954.html)
+
+[Django 静态文件配置(总static与分static)](https://www.cnblogs.com/Andy963/p/Django.html)
+
+[django1.10开发博客（11）——markdown与多说评论功能](https://www.jianshu.com/p/a49ab81a683c)
+
+[django学习——过滤器truncatechars_html的用途详解](https://blog.csdn.net/geerniya/article/details/79347534)
