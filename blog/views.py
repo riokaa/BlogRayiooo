@@ -4,7 +4,7 @@ from blog.models import Article
 
 # Create your views here.
 def blog_main(request):
-    blog_list = Article.objects.all()
+    blog_list = Article.objects.filter(author=1)
     c = {
         'blog_list': blog_list,
     }

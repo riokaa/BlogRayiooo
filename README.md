@@ -384,4 +384,6 @@ urlpatterns = [
 
 [Django模板系统(非常详细)](https://blog.csdn.net/zhangxinrun/article/details/8095118/)
 
+[django进阶-查询(适合GET4以上人群阅读)](https://www.cnblogs.com/0zcl/p/6601954.html)
+
 [使用strapdown.js解析markdown](https://blog.csdn.net/u010351766/article/details/51704958)
