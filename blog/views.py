@@ -1,5 +1,5 @@
 from django.shortcuts import render, render_to_response
-from models import Article
+from blog.models import Article
 
 
 # Create your views here.
