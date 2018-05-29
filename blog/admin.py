@@ -12,7 +12,7 @@ class ArticleTypeAdmin(admin.ModelAdmin):
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['title', 'author', 'type', 'content', 'timestamp']
+    list_display = ['title', 'author', 'type', 'content', 'timestamp', 'click']
 
 
 admin.site.register(User, UserAdmin)
