@@ -21,8 +21,8 @@ from . import private
 
 urlpatterns = [
     path(private.ADMIN_MENU, admin.site.urls),
-    path('blog/', blog_view.blog_main),
-    path('blog/article/', blog_view.blog_article),
+    path('', blog_view.blog_main),
+    path('article/', blog_view.blog_article),
     # path('static/', RedirectView.as_view(url='../static')),
     # path('static/img/blog/favicon.ico', RedirectView.as_view(url='../static/img/blog/favicon.ico')),
 ]
