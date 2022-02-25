@@ -3,9 +3,9 @@
 
 `BlogRayiooo` = `python3.6/32位` + `apache2.4/32位` + `MySQL` + `win10 server`
 
-|Author|爱吃大板|
+<!-- |Author|爱吃大板|
 |---|---|
-|Email|rayiooo@foxmail.com|
+|Email|rayiooo@foxmail.com| -->
 
 # 1 python库
 * django
